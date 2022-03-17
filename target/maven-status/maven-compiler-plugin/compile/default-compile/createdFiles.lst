@@ -1,0 +1,4 @@
+com\mycompany\bigramproj\Bigrams_parallel$producer.class
+com\mycompany\bigramproj\Bigrams_sequential.class
+com\mycompany\bigramproj\Bigrams_parallel$consumer.class
+com\mycompany\bigramproj\Bigrams_parallel.class
