@@ -204,8 +204,8 @@ public class Bigrams_parallel {
 			long startTime = System.nanoTime();
 
 
-			ExecutorService poolCons = Executors.newFixedThreadPool(4);
-			for (int i = 0; i < 4; i++) {
+			ExecutorService poolCons = Executors.newFixedThreadPool(8);
+			for (int i = 0; i < 8; i++) {
 				poolCons.execute(parNgrams.new consumer());
 			}
 			
@@ -217,7 +217,7 @@ public class Bigrams_parallel {
 				e1.printStackTrace();
 			}
 			
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 8; i++) {
 				parNgrams.notBlockingqueue.add(parNgrams.NO_MORE_MESSAGES);
 			}
 			poolCons.shutdown();
