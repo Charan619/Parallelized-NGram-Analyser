@@ -19,6 +19,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.*;  
+import java.io.*;
+
+
 
 public class Bigrams_parallel {
 	private ConcurrentHashMap<String, Integer> globalDict;
@@ -160,29 +164,49 @@ public class Bigrams_parallel {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args)throws IOException {
 		String regEx = "";
 		String regExLastToken = "";
-		if(args.length != 1) {
+
+
+                System.out.print("Parallel Bigram calculator\n");  
+                System.out.print("1.Bigram calculation of letters\n");  
+                System.out.print("2.Bigram calculation of words\n");  
+                
+                Scanner sc= new Scanner(System.in);    //System.in is a standard input stream  
+                //BufferedReader bfn = new BufferedReader(new InputStreamReader(System.in));
+                int opt = 1;
+                opt = sc.nextInt();
+                //sc.close();
+
+                //opt = Integer.parseInt(bfn.readLine());
+		if(opt == 1) {
                         regEx = "[a-zA-Z]";
 			regExLastToken = "[a-zA-Z][^a-zA-Z]*$";
-                        //regEx = "[a-zA-Z]+";
+                       // regEx = "[a-zA-Z]+";
 			//regExLastToken = "[a-zA-Z]+[^a-zA-Z]*$";
 			System.out.println("Bigram calculation of letters");
+
 			//System.exit(0);
 		}
-		else if(args[0].equals("letters")) {
-			
-		}
-		else if(args[0].equals("words")) {
+		else if(opt == 2) {
 			regEx = "[a-zA-Z]+";
 			regExLastToken = "[a-zA-Z]+[^a-zA-Z]*$";
 			System.out.println("Calculating word bigrams");
 		} else {
 			System.exit(0);
 		}
-			
-		int numIter = 10;
+                System.out.println("Number of processors available:");
+		System.out.println( Runtime.getRuntime().availableProcessors());
+                System.out.println("Enter number of threads to use");
+
+                //Scanner sc2= new Scanner(System.in);    //System.in is a standard input stream  
+                int tno = sc.nextInt();
+                //System.out.println(tno);
+
+                sc.close();
+                
+		int numIter = 2;
 		double sumElapsedTime = 0.0;
 		
 		Bigrams_parallel parNgrams = new Bigrams_parallel(regEx, regExLastToken);
@@ -206,8 +230,8 @@ public class Bigrams_parallel {
 			long startTime = System.nanoTime();
 
 
-			ExecutorService poolCons = Executors.newFixedThreadPool(10);
-			for (int i = 0; i < 10; i++) {
+			ExecutorService poolCons = Executors.newFixedThreadPool(tno);
+			for (int i = 0; i < tno; i++) {
 				poolCons.execute(parNgrams.new consumer());
 			}
 			
@@ -219,7 +243,7 @@ public class Bigrams_parallel {
 				e1.printStackTrace();
 			}
 			
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < tno; i++) {
 				parNgrams.notBlockingqueue.add(parNgrams.NO_MORE_MESSAGES);
 			}
 			poolCons.shutdown();

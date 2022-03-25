@@ -108,7 +108,7 @@ public class Bigrams_sequential {
 			System.exit(0);
 		}
 		
-		int numIter = 5;
+		int numIter = 2;
 		double sumElapsedTime = 0.0;
 		LinkedList<String> txtListMain = new LinkedList<String>();
 		loadDatasets(txtListMain);
@@ -127,11 +127,10 @@ public class Bigrams_sequential {
 					
 			
 			//Print HasMaps of Bigrams
-	    	for (String name: dict.keySet()){
-	            String key = name;
-	            Integer value = dict.get(name); 
-	            System.out.println(key + " " + value);   
-	        }
+	    	//for (String name: dict.keySet()){
+	       //     String key = name;
+	       //     System.out.println(key + " " + value);   
+	      //  }
 	           
 	        
 		}
