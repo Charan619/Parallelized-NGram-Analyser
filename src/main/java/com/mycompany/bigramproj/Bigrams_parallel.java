@@ -166,6 +166,8 @@ public class Bigrams_parallel {
 		if(args.length != 1) {
                         regEx = "[a-zA-Z]";
 			regExLastToken = "[a-zA-Z][^a-zA-Z]*$";
+                        //regEx = "[a-zA-Z]+";
+			//regExLastToken = "[a-zA-Z]+[^a-zA-Z]*$";
 			System.out.println("Bigram calculation of letters");
 			//System.exit(0);
 		}
@@ -180,7 +182,7 @@ public class Bigrams_parallel {
 			System.exit(0);
 		}
 			
-		int numIter = 5;
+		int numIter = 10;
 		double sumElapsedTime = 0.0;
 		
 		Bigrams_parallel parNgrams = new Bigrams_parallel(regEx, regExLastToken);
@@ -204,8 +206,8 @@ public class Bigrams_parallel {
 			long startTime = System.nanoTime();
 
 
-			ExecutorService poolCons = Executors.newFixedThreadPool(8);
-			for (int i = 0; i < 8; i++) {
+			ExecutorService poolCons = Executors.newFixedThreadPool(10);
+			for (int i = 0; i < 10; i++) {
 				poolCons.execute(parNgrams.new consumer());
 			}
 			
@@ -217,7 +219,7 @@ public class Bigrams_parallel {
 				e1.printStackTrace();
 			}
 			
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 10; i++) {
 				parNgrams.notBlockingqueue.add(parNgrams.NO_MORE_MESSAGES);
 			}
 			poolCons.shutdown();
@@ -233,11 +235,11 @@ public class Bigrams_parallel {
 				
 			
 			// ######Print HasMaps of Bigrams######
-	    	for (String name: parNgrams.globalDict.keySet()){
-	            String key = name;
-	            Integer value = parNgrams.globalDict.get(name);
-	            System.out.println(key + " " + value);  
-	        } 
+	    	//for (String name: parNgrams.globalDict.keySet()){
+	      //      String key = name;
+	       //     Integer value = parNgrams.globalDict.get(name);
+	       //     System.out.println(key + " " + value);  
+	       // } 
 	        
 			
 			System.out.println("PARALLEL ELAPSED TIME: " + elapsedTime + " sec");
